@@ -175,6 +175,7 @@ namespace ApiApp_Male.Controllers
                                     //"GetAuthorById",
                                     new { Id = CurAuthor.AuthorId },
                                     MapAuthorToResponse(CurAuthor));
+
         }
 
         [HttpPut("{AuthorId}")]
