@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApiApp_Male.helper
 {
-    public class ErrorClass
+    public class ErrorClass : IErrorClass
     {
         private readonly IConfiguration config;
 
@@ -21,7 +21,7 @@ namespace ApiApp_Male.helper
         public void LoadError(String ErrorCode)
         {
             this.ErrorCode = ErrorCode;
-            var eSection=config.GetSection("Errors");
+            var eSection = config.GetSection("Errors");
             eSection.Bind(ErrorCode, this);
         }
     }

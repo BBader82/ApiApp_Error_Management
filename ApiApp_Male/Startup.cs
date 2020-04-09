@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using ApiApp_Male.helper;
 using ApiApp_Male.Models;
 using ApiApp_Male.Models.entities;
+using ApiApp_Male.Repositories;
+using ApiApp_Male.Repositories.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +41,9 @@ namespace ApiApp_Male
                         @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Library;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
                 ));
 
-            services.AddSingleton<ErrorClass>();
+            services.AddSingleton<IErrorClass,ErrorClass>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
