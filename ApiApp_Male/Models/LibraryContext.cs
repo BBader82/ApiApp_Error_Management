@@ -17,5 +17,7 @@ namespace ApiApp_Male.Models
         public DbSet<Author> Author { get; set; }
         public DbSet<Book> Book { get; set; }
         public DbSet<Library> Library { get; set; }
+
+        public DbSet<Users> Users { get; set; }
     }
 }

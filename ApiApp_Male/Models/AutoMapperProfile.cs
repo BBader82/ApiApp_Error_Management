@@ -1,4 +1,5 @@
 ﻿using ApiApp_Male.Models;
+using ApiApp_Male.Models.entities;
 using ApiApp_Male.Models.RequestDTO;
 using ApiApp_Male.Models.ResponseDTO;
 using AutoMapper;
@@ -20,6 +21,9 @@ namespace APIApp.Models
             CreateMap<AuthorUpdateRequestDTO, Author>();
 
             CreateMap<AuthorAddRequestDTO, Author>();
-        }
+
+            CreateMap<UserAddDTO, Users>().ForMember(x => x.UserId,
+                op => op.MapFrom(s => Guid.NewGuid()));
+;        }
     }
 }

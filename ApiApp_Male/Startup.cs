@@ -36,13 +36,15 @@ namespace ApiApp_Male
                 .AddNewtonsoftJson();
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(Startup));
             
             services.AddDbContext<LibraryContext>(o => o.UseSqlServer(
-                        @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Library;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+                        @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Library2;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
                 ));
 
             services.AddSingleton<IErrorClass,ErrorClass>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
         }
 
