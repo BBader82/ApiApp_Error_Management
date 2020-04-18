@@ -12,6 +12,7 @@ namespace ApiApp_Male.Models.ResponseDTO
 
         public String UserId { get; set; }
         public String UserName { get; set; }
+        public String  Token { get; set; }
 
         public String ErrorCode { get; set; }
     }

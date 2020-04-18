@@ -4,9 +4,13 @@ using ApiApp_Male.Models.RequestDTO;
 using ApiApp_Male.Models.ResponseDTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,11 +20,13 @@ namespace ApiApp_Male.Repositories
     {
         private readonly LibraryContext dbcontext;
         private readonly IMapper map;
+        private readonly IConfiguration config;
 
-        public UserRepository(LibraryContext dbcontext, IMapper map)
+        public UserRepository(LibraryContext dbcontext, IMapper map,IConfiguration config)
         {
             this.dbcontext = dbcontext;
             this.map = map;
+            this.config = config;
         }
 
         public AuthResult Registration(UserAddDTO userDTO)
@@ -58,7 +64,28 @@ namespace ApiApp_Male.Repositories
             {
                 return new AuthResult { Success = false, ErrorCode = "Usr004" };
             }
-            return new AuthResult { Success=true,UserId=CurUser.UserId,UserName=CurUser.UserName};
+            //generate JWT Token
+            var key = config.GetValue<String>("JWTSecret");
+            var KeyByte = Encoding.ASCII.GetBytes(key);
+            var Desc = new SecurityTokenDescriptor { 
+                    Expires=DateTime.UtcNow.AddMinutes(1),
+                    SigningCredentials=new SigningCredentials(new SymmetricSecurityKey(KeyByte),SecurityAlgorithms.HmacSha512Signature),
+                    Subject=new ClaimsIdentity(
+                        new Claim[] { 
+                            new Claim(JwtRegisteredClaimNames.Sub,CurUser.UserName),
+                            new Claim(JwtRegisteredClaimNames.Email,CurUser.Email),
+                            new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+                            new Claim("UserId",CurUser.UserId)
+                        }
+                        )
+            };
+            var handler = new JwtSecurityTokenHandler();
+            var token=handler.CreateToken(Desc);
+
+
+            return new AuthResult { Success=true,UserId=CurUser.UserId,UserName=CurUser.UserName,
+                                        Token= handler.WriteToken(token)
+            };
 
         }
 

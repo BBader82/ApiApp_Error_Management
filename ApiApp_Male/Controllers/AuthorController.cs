@@ -11,6 +11,7 @@ using ApiApp_Male.Models.ResponseDTO;
 using ApiApp_Male.Repositories;
 using ApiApp_Male.Repositories.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,7 @@ namespace ApiApp_Male.Controllers
         }
 
         [HttpGet(Name = "GetAllAuthors")]
+        [Authorize]
         public IActionResult GetAllAuthors([FromQuery]String FilterAuthorName,
                                             String FilterLocation,
                                            // [FromQuery] String SearchingString,
